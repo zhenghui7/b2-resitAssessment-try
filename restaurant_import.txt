@@ -1,1 +1,61 @@
 TODO: Task 1 - Write the mongo import command here
+mongoimport -hlocalhost --port=27017 -drestaurantdb -crestaurants --jsonArray restaurants.json
+
+Task 3:
+db.restaurants.aggregate([
+  {
+    $match: {
+      cuisine: "Asian"
+    }
+  },
+  {
+    $project: {
+      name: 1,
+      "address.building": 1,
+      "address.street": 1,
+      "address.zipcode": 1,
+      borough: 1,
+      restaurantId: "$restaurant_id",
+      cuisine: {
+        $replaceAll: {
+          input: "$cuisine",
+          find: "/",
+          replacement: "_"
+        }
+      },
+      comments: "$grades"
+    }
+  },
+  {
+    $sort: {
+      name: 1
+    }
+  }
+])
+
+Task 4:
+db.restaurants.aggregate([
+  {
+    $match: {
+      restaurant_id: "40827287"
+    }
+  },
+  {
+    $project: {
+      name: 1,
+      "address.building": 1,
+      "address.street": 1,
+      "address.zipcode": 1,
+      borough: 1,
+      restaurantId: "$restaurant_id",
+      cuisine: {
+        $replaceAll: {
+          input: "$cuisine",
+          find: "/",
+          replacement: "_"
+        }
+      },
+      comments: "$grades"
+    }
+  }
+])
